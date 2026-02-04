@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandip Koli - Software Developer Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- 1. CORE RESET & LAYOUT FIXES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth; /* Native Smooth Scroll */
+            height: 100%;
+        }
+
+        body {
+            font-family: 'IBM Plex Mono', monospace;
+            background: linear-gradient(
+                to bottom,
+                rgb(252, 250, 245) 0%,
+                rgb(240, 235, 225) 20%,
+                rgb(231, 222, 208) 35%,
+                rgb(212, 206, 199) 50%,
+                rgb(168, 153, 145) 70%,
+                rgb(18, 18, 20) 100%
+            );
+            color: rgb(25, 25, 25);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column; /* Fixed infinite scroll foundation */
+            overflow-x: hidden;
+        }
+
+        /* --- 2. THEMES & VARIABLES --- */
+        :root {
+            --accent-color: rgb(186, 160, 147);
+        }
+
+        /* --- 3. TEXT VISIBILITY FIXES --- */
+        .project-description {
+            color: #ffffff !important; /* Forced Lightest Color */
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4); /* Contrast boost */
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .dynamic-text {
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        /* --- 4. COMPONENTS --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+            flex: 1 0 auto; /* Pushes footer to bottom without extra scroll */
+        }
+
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(180, 100, 60, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        .grain-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.035;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* --- 5. SECTIONS --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 0;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 900;
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+        }
+
+        .project-card {
+            margin-bottom: 6rem;
+            position: relative;
+            padding-left: 3rem;
+            border-left: 2px solid rgba(0, 0, 0, 0.1);
+            transition: border-color 0.2s ease;
+        }
+
+        .project-card:hover { border-left-color: var(--accent-color); }
+
+        .tech-badge {
+            font-size: 0.7rem;
+            padding: 0.35rem 0.75rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #ffffff !important;
+        }
+
+        /* --- 6. FOOTER (END OF PAGE FIX) --- */
+        footer {
+            flex-shrink: 0; /* Prevents footer compression */
+            padding: 4rem 0;
+            text-align: center;
+            background: rgb(18, 18, 20); /* Match dark gradient end */
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            top: 0; left: 0;
+            height: 4px;
+            background: var(--accent-color);
+            z-index: 9999;
+            width: 0%;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 1.5rem; }
+            .hero { min-height: 80vh; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor-glow" id="cursorGlow"></div>
+    <div class="grain-overlay"></div>
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+
+    <div class="container">
+        <section class="hero">
+            <h1 class="hero-title dynamic-text">SANDIP<br>KOLI</h1>
+            <h2 style="font-family:'Cormorant Garamond'; font-size: 2rem;" class="dynamic-text">Full Stack Developer</h2>
+            <p style="max-width: 600px; margin-top: 2rem;" class="dynamic-text">
+                Building secure, scalable, and robust enterprise applications with 3+ years of experience in ASP.NET Core and Angular.
+            </p>
+        </section>
+
+        <section id="projects">
+            <div style="margin-bottom: 4rem;">
+                <h2 style="font-family:'Playfair Display'; font-size: 3rem;" class="dynamic-text">Featured Projects</h2>
+            </div>
+
+            <div class="project-card">
+                <h3 style="font-family:'Playfair Display'; font-size: 2rem; color: white;" class="dynamic-text">HealthIQ 2.0</h3>
+                <div style="display:flex; gap: 0.5rem; margin: 1rem 0;">
+                    <span class="tech-badge">Angular</span>
+                    <span class="tech-badge">.NET Core</span>
+                    <span class="tech-badge">SQL Server</span>
+                </div>
+                <p class="project-description">
+                    Comprehensive healthcare platform designed to enhance hospital management, patient care, and telemedicine services.
+                </p>
+                <ul style="list-style: none; color: white; font-size: 0.9rem;">
+                    <li style="margin-bottom: 0.5rem;">→ Optimized SQL Server schemas for performance.</li>
+                    <li style="margin-bottom: 0.5rem;">→ Implemented JWT authentication and secure API handling.</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p style="color: white; letter-spacing: 2px;" class="footer-text">© 2026 SANDIP KOLI — FULL STACK DEVELOPER</p>
+    </footer>
+
+    <script>
+        // 1. Cursor & Scroll logic
+        const cursorGlow = document.getElementById('cursorGlow');
+        const scrollIndicator = document.getElementById('scrollIndicator');
+
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+
+        // 2. Scroll Progress & Dynamic Contrast
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            
+            scrollIndicator.style.width = scrolled + '%';
+
+            // Contrast adjustment based on scroll position
+            const dynamicTexts = document.querySelectorAll('.dynamic-text');
+            dynamicTexts.forEach(el => {
+                if (scrolled > 50) {
+                    el.style.color = '#ffffff';
+                    el.style.textShadow = '0 1px 3px rgba(0,0,0,0.5)';
+                } else {
+                    el.style.color = 'rgb(25, 25, 25)';
+                    el.style.textShadow = 'none';
+                }
+            });
+        });
+
+        // 3. Entry Animations (Intersection Observer)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.project-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.8s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
