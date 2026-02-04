@@ -6,21 +6,25 @@
     <title>Sandip Koli - Software Developer Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* --- 1. CORE RESET & LAYOUT FIXES --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            --accent-color: rgb(186, 160, 147);
+        html {
+            scroll-behavior: smooth; /* Native smooth scrolling */
+            height: 100%;
         }
 
         body {
             font-family: 'IBM Plex Mono', monospace;
+            /* FIX APPLIED: 
+               1. background-attachment: fixed -> Locks gradient in place so it doesn't repeat/tile.
+               2. background-repeat: no-repeat -> Prevents the 'lines' you saw.
+               3. background-size: cover -> Ensures it fills the screen perfectly.
+            */
             background: linear-gradient(
                 to bottom,
                 rgb(252, 250, 245) 0%,
@@ -30,11 +34,49 @@
                 rgb(168, 153, 145) 70%,
                 rgb(18, 18, 20) 100%
             );
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+            
             color: rgb(25, 25, 25);
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             overflow-x: hidden;
+            transition: color 0.4s ease;
         }
 
+        :root {
+            --accent-color: rgb(186, 160, 147);
+        }
+
+        /* --- 2. DARK MODE VISIBILITY FIXES --- */
+        /* Forces white text when 'dark-mode' class is active */
+        body.dark-mode .dynamic-text,
+        body.dark-mode .project-description,
+        body.dark-mode .stat-number,
+        body.dark-mode .section-title,
+        body.dark-mode .tech-badge,
+        body.dark-mode .contact-icon,
+        body.dark-mode .contact-value {
+            color: #ffffff !important;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* Glass effect for cards in dark mode */
+        body.dark-mode .skill-category,
+        body.dark-mode .project-card,
+        body.dark-mode .contact-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        body.dark-mode .project-card:hover {
+            border-left-color: #ffffff;
+        }
+
+        /* --- 3. COMPONENTS --- */
         .cursor-glow {
             position: fixed;
             width: 300px;
@@ -48,10 +90,7 @@
 
         .grain-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
             opacity: 0.035;
             pointer-events: none;
@@ -64,8 +103,11 @@
             padding: 0 2rem;
             position: relative;
             z-index: 2;
+            flex: 1; 
+            width: 100%;
         }
 
+        /* --- 4. SECTIONS --- */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -127,6 +169,7 @@
             font-size: 3rem;
             font-weight: 700;
             color: var(--accent-color);
+            transition: color 0.3s ease;
         }
 
         .stat-label {
@@ -137,10 +180,7 @@
         }
 
         @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         section {
@@ -189,20 +229,14 @@
         .skill-category::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
+            top: 0; left: 0; width: 100%; height: 2px;
             background: var(--accent-color);
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.4s ease;
         }
 
-        .skill-category:hover::before {
-            transform: scaleX(1);
-        }
-
+        .skill-category:hover::before { transform: scaleX(1); }
         .skill-category:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
@@ -230,7 +264,7 @@
             border-radius: 2px;
             transition: all 0.3s ease;
         }
-
+        
         .skill-tag:hover {
             background: rgba(180, 100, 60, 0.2);
             transform: translateY(-2px);
@@ -241,12 +275,10 @@
             position: relative;
             padding-left: 3rem;
             border-left: 2px solid rgba(0, 0, 0, 0.1);
-            transition: border-color 0.2s ease;
+            transition: border-color 0.2s ease, background 0.3s ease;
         }
 
-        .project-card:hover {
-            border-left-color: var(--accent-color);
-        }
+        .project-card:hover { border-left-color: var(--accent-color); }
 
         .project-title {
             font-family: 'Playfair Display', serif;
@@ -328,9 +360,7 @@
             color: var(--accent-color);
         }
 
-        .contact-details {
-            flex: 1;
-        }
+        .contact-details { flex: 1; }
 
         .contact-label {
             font-size: 0.75rem;
@@ -346,54 +376,40 @@
         }
 
         footer {
-            margin-top: auto;   
-            margin-bottom: auto;
+            margin-top: auto;
             padding: 4rem 0;
             text-align: center;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
-            margin-top: 8rem;
+            background: rgb(18, 18, 20); 
             opacity: 0.8;
+            width: 100%;
         }
 
         .footer-text {
             font-size: 0.85rem;
             letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .scroll-indicator {
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             height: 4px;
             background: var(--accent-color);
             z-index: 9999;
-            transform-origin: left;
+            width: 0%;
             transition: width 0.1s ease;
         }
 
-        .dynamic-text {
-            transition: color 0.3s ease;
-        }
+        .dynamic-text { transition: color 0.3s ease; }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 0 1.5rem;
-            }
-            .hero-stats {
-                gap: 2rem;
-            }
-            .stat-number {
-                font-size: 2rem;
-            }
-            section {
-                padding: 5rem 0;
-            }
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-            .project-card {
-                padding-left: 1.5rem;
-            }
+            .container { padding: 0 1.5rem; }
+            .hero-stats { gap: 2rem; }
+            .stat-number { font-size: 2rem; }
+            section { padding: 5rem 0; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .project-card { padding-left: 1.5rem; }
         }
     </style>
 </head>
@@ -576,21 +592,16 @@
                     <div class="contact-icon dynamic-text">📧</div>
                     <div class="contact-details">
                         <div class="contact-label dynamic-text">Email</div>
-                        <div class="contact-value dynamic-text">sandip.koli.in@gmail.com</div>
+                        <div class="contact-value dynamic-text"><a class="contact-value dynamic-text" href="mailto:sandip.koli.in@gmail.com">sandip.koli.in@gmail.com</a></div>
                     </div>
                 </div>
                 <div class="contact-item">
                     <div class="contact-icon dynamic-text">📱</div>
                     <div class="contact-details">
                         <div class="contact-label dynamic-text">Phone</div>
-                        <div class="contact-value dynamic-text">9307880727</div>
+                        <div class="contact-value dynamic-text"><a class="contact-value dynamic-text" href="tel:+919307880727">9307880727</a></div>
                     </div>
                 </div>
-                <!-- <div class="contact-item">
-                    <div class="contact-icon dynamic-text">📍</div>
-                    <div class="contact-details">
-                    </div>
-                </div> -->
             </div>
         </section>
     </div>
@@ -599,6 +610,75 @@
         <p class="footer-text dynamic-text">© 2026 SANDIP KOLI — FULL STACK DEVELOPER</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // 1. Cursor glow effect
+        const cursorGlow = document.getElementById('cursorGlow');
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+
+        // 2. Scroll Logic: Progress Bar + Dark Mode Toggle
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        const body = document.body;
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            
+            scrollIndicator.style.width = scrolled + '%';
+            
+            // Toggle Dark Mode class when scroll > 50%
+            if (scrolled > 50) {
+                body.classList.add('dark-mode');
+            } else {
+                body.classList.remove('dark-mode');
+            }
+        });
+
+        // 3. Intersection Observer for Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.skill-category, .project-card, .contact-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(el);
+        });
+
+        // 4. Parallax Effect (Subtle)
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.hero');
+            
+            parallaxElements.forEach(el => {
+                const speed = 0.5;
+                el.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // 5. Skill Tag Hover Effect
+        document.querySelectorAll('.skill-tag').forEach(tag => {
+            tag.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.05)';
+            });
+            tag.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
 </body>
 </html>
